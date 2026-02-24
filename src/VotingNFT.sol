@@ -67,7 +67,7 @@ contract VotingNFT is ERC721 {
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
         // Utilisation de ownerOf pour vérifier l'existence
         try this.ownerOf(_tokenId) returns (address) {}
-            catch {
+        catch {
             revert("Token inexistant");
         }
 
