@@ -17,7 +17,6 @@ contract VotingNFTTest is Test {
         voting = new VotingNFT();
     }
 
-
     function test_AdminCanWhitelist() public {
         vm.prank(admin);
         voting.addToWhitelist(voter1);
@@ -30,7 +29,6 @@ contract VotingNFTTest is Test {
         voting.addToWhitelist(hacker);
     }
 
-
     function test_FullVotingProcessAndWinnerSVG() public {
         // 1. Préparation des votes (Projet B va gagner)
         vm.startPrank(admin);
@@ -41,12 +39,12 @@ contract VotingNFTTest is Test {
 
         // 2. Voter
         vm.prank(voter1);
-        voting.vote(0); 
+        voting.vote(0);
 
         vm.prank(voter2);
-        voting.vote(1); 
+        voting.vote(1);
         vm.prank(voter3);
-        voting.vote(1); 
+        voting.vote(1);
 
         // 3. Vérifier l'état avant clôture (SVG par défaut)
         string memory uriBefore = voting.tokenURI(1);
@@ -59,27 +57,19 @@ contract VotingNFTTest is Test {
 
         assertTrue(voting.votingFinished());
 
-
-
         assertEq(voting.winningProposalId(), 1);
 
-
         string memory uriAfter = voting.tokenURI(1);
-        
-        string memory uriLoser = voting.tokenURI(0);
-        
-        assertTrue(
-            keccak256(bytes(uriAfter)) != keccak256(bytes(uriLoser)), 
-            "SVG differents"
-        );
-        
 
+        string memory uriLoser = voting.tokenURI(0);
+
+        assertTrue(keccak256(bytes(uriAfter)) != keccak256(bytes(uriLoser)), "SVG differents");
     }
 
     function test_CannotVoteAfterTally() public {
         vm.prank(admin);
         voting.addToWhitelist(voter1);
-        
+
         vm.prank(admin);
         voting.tallyVotes();
 
@@ -93,10 +83,10 @@ contract VotingNFTTest is Test {
         voting.tokenURI(999);
     }
 
-    // Helper function pour parser le contenu de l'URI 
+    // Helper function pour parser le contenu de l'URI
     function _stringContains(string memory haystack, string memory needle) internal pure returns (bool) {
-        return bytes(haystack).length > 0 && bytes(haystack).length >= bytes(needle).length && 
-               _indexOf(haystack, needle) != type(uint256).max;
+        return bytes(haystack).length > 0 && bytes(haystack).length >= bytes(needle).length
+            && _indexOf(haystack, needle) != type(uint256).max;
     }
 
     function _indexOf(string memory haystack, string memory needle) internal pure returns (uint256) {
