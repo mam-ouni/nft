@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.21",
+    "connectkit": "^1.9.1",
+    "viem": "^2.46.3",
+    "wagmi": "^2.19.5"
+  }
+}
