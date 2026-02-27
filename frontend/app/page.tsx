@@ -5,6 +5,7 @@ import { useAccount, useReadContract, useWriteContract, useWaitForTransactionRec
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/config/contract";
 import { useEffect, useState } from "react";
 import NftCard from "@/components/NftCard";
+import AdminPanel from "@/components/AdminPanel";
 
 export default function Home() {
   const { isConnected, address } = useAccount();
@@ -25,6 +26,12 @@ export default function Home() {
     });
   };
 
+  const { data: adminAddress, isLoading } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'admin',
+  });
+
   console.log("Adresse du contrat:", CONTRACT_ADDRESS);
   console.log("Fonction vote dans ABI ?", CONTRACT_ABI.some(item => item.name === 'vote'));
 
@@ -35,7 +42,7 @@ export default function Home() {
         <h1 className="text-2xl font-black text-indigo-600">VOTE M2 NFT</h1>
         <ConnectKitButton />
       </nav>
-
+      
       {isConnected ? (
         <div className="w-full max-w-4xl space-y-8">
           
@@ -84,6 +91,7 @@ export default function Home() {
           </section>
                   <NftCard />
           {/* Espace Admin (Simplifié) */}
+          <AdminPanel adminAddress={adminAddress} />
           <footer className="text-center pt-8 border-t border-slate-200">
             <p className="text-slate-400 text-sm">Connecté avec : {address}</p>
           </footer>
