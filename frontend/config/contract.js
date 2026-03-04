@@ -1,10 +1,62 @@
-export const CONTRACT_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // important : À remplacer en changant l'adresse du contrat après le déploiement
+export const CONTRACT_FACTORY_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; 
 
-export const CONTRACT_ABI =  [
+export const CONTRACT_FACTORY_ABI = [
+  {
+    "name": "createPoll",
+    "type": "function",
+    "stateMutability": "external",
+    "inputs": [
+      { "name": "_name", "type": "string" },
+      { "name": "_symbol", "type": "string" },
+      { "name": "_description", "type": "string" },
+      { "name": "_proposals", "type": "string[]" }
+    ],
+    "outputs": []
+  },
+  {
+    "name": "getPolls",
+    "type": "function",
+    "stateMutability": "view",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "components": [
+          { "name": "contractAddress", "type": "address" },
+          { "name": "name", "type": "string" },
+          { "name": "description", "type": "string" },
+          { "name": "creator", "type": "address" },
+          { "name": "isClosed", "type": "bool" }
+        ]
+      }
+    ]
+  }
+];
+
+export const CONTRACT_ABI = [
   {
     "type": "constructor",
     "inputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getVoterTokenId",
+    "inputs": [
+      {
+        "name": "_voter",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -528,106 +580,18 @@ export const CONTRACT_ABI =  [
     "anonymous": false
   },
   {
-    "type": "error",
-    "name": "ERC721IncorrectOwner",
-    "inputs": [
-      {
-        "name": "sender",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InsufficientApproval",
-    "inputs": [
-      {
-        "name": "operator",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InvalidApprover",
-    "inputs": [
-      {
-        "name": "approver",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InvalidOperator",
-    "inputs": [
-      {
-        "name": "operator",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InvalidOwner",
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InvalidReceiver",
-    "inputs": [
-      {
-        "name": "receiver",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InvalidSender",
-    "inputs": [
-      {
-        "name": "sender",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721NonexistentToken",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ]
-  }
+  "name": "getProposals",
+  "type": "function",
+  "stateMutability": "view",
+  "inputs": [],
+  "outputs": [
+    {
+      "type": "tuple[]",
+      "components": [
+        { "name": "name", "type": "string" },
+        { "name": "voteCount", "type": "uint256" }
+      ]
+    }
+  ]
+}
 ];
