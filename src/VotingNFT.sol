@@ -8,6 +8,7 @@ contract VotingNFT is ERC721 {
     using Strings for uint256;
 
     address public admin;
+    string public description; 
     uint256 public nextTokenId;
     uint256 public winningProposalId;
     bool public votingFinished;
@@ -20,14 +21,23 @@ contract VotingNFT is ERC721 {
     Proposal[] public proposals;
     mapping(address => bool) public whitelist;
     mapping(address => bool) public hasVoted;
-    mapping(uint256 => uint256) public userChoice;
+    mapping(uint256 => uint256) public tokenToChoice; 
+    mapping(address => uint256) public voterToTokenId; 
 
     event VoteCast(address indexed voter, uint256 proposalId, uint256 tokenId);
 
-    constructor() ERC721("VoteBadge", "VTB") {
-        admin = msg.sender;
-        proposals.push(Proposal("Projet A", 0));
-        proposals.push(Proposal("Projet B", 0));
+    constructor(
+        string memory _name, 
+        string memory _symbol, 
+        string memory _description,
+        string[] memory _proposalNames,
+        address _admin
+    ) ERC721(_name, _symbol) {
+        admin = _admin;
+        description = _description;
+        for (uint i = 0; i < _proposalNames.length; i++) {
+            proposals.push(Proposal(_proposalNames[i], 0));
+        }
     }
 
     function addToWhitelist(address _voter) external {
@@ -39,13 +49,14 @@ contract VotingNFT is ERC721 {
         require(whitelist[msg.sender], "Pas autorise");
         require(!hasVoted[msg.sender], "Deja vote");
         require(!votingFinished, "Vote clos");
+        require(_proposalId < proposals.length, "Choix invalide");
 
-        uint256 tokenId = nextTokenId;
-        nextTokenId++;
-
+        uint256 tokenId = nextTokenId++;
         hasVoted[msg.sender] = true;
+        voterToTokenId[msg.sender] = tokenId;
+        
         proposals[_proposalId].voteCount++;
-        userChoice[tokenId] = _proposalId;
+        tokenToChoice[tokenId] = _proposalId;
 
         _safeMint(msg.sender, tokenId);
         emit VoteCast(msg.sender, _proposalId, tokenId);
@@ -54,7 +65,6 @@ contract VotingNFT is ERC721 {
     function tallyVotes() external {
         require(msg.sender == admin, "Seul l'admin peut clore");
         votingFinished = true;
-
         uint256 highestVotes = 0;
         for (uint256 i = 0; i < proposals.length; i++) {
             if (proposals[i].voteCount > highestVotes) {
@@ -70,7 +80,7 @@ contract VotingNFT is ERC721 {
             revert("Token inexistant");
         }
 
-        uint256 choice = userChoice[_tokenId];
+        uint256 choice = tokenToChoice[_tokenId];
         string memory projectName = proposals[choice].name;
         string memory finalSvg;
 
@@ -136,4 +146,15 @@ contract VotingNFT is ERC721 {
             "<text x='236' y='440' font-size='30' text-anchor='middle' fill='white' font-weight='bold'>GAGNANT: ", projectName, "</text></svg>"
         );
     }
+
+    function getVoterTokenId(address _voter) public view returns (uint256) {
+        require(hasVoted[_voter], "Aucun NFT trouve");
+        return voterToTokenId[_voter];
+    }
+
+    function getProposals() public view returns (Proposal[] memory) {
+        return proposals;
+    }
 }
+
+
