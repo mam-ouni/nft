@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 
 export default function RequestAccess() {
+  
   const { address } = useAccount();
   const [formData, setFormData] = useState({ name: '', reason: '', type: 'whitelist' });
   const [sent, setSent] = useState(false);
@@ -17,6 +18,7 @@ export default function RequestAccess() {
     setSent(true);
     setTimeout(() => setSent(false), 3000);
   };
+
 
   return (
     <div className="bg-white/60 backdrop-blur-md p-6 rounded-3xl border border-white shadow-lg mt-8">

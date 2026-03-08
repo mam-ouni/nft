@@ -6,6 +6,7 @@ import { CONTRACT_FACTORY_ADDRESS, CONTRACT_FACTORY_ABI } from '@/config/contrac
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useRouter } from 'next/navigation';
 
+
 export default function CreatePoll() {
   const router = useRouter();
   const [name, setName] = useState('');

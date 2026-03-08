@@ -595,7 +595,3 @@ export const CONTRACT_ABI = [
   ]
 }
 ];
-
-export const getContractExplorerUrl = (address) => {
-  return `https://sepolia.etherscan.io/address/${address}`;
-};

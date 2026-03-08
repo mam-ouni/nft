@@ -25,6 +25,7 @@ export default function AdminPanel({ contractAddress, adminAddress }) {
 
     const [requests, setRequests] = useState([]);
 
+    
     useEffect(() => {
     const loadRequests = () => {
         const data = JSON.parse(localStorage.getItem('vote_requests') || '[]');
