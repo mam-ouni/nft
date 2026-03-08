@@ -16,6 +16,7 @@ export default function Dashboard() {
       const data = JSON.parse(localStorage.getItem('closed_polls') || '[]');
       setLocalClosedPolls(data.map(addr => addr.toLowerCase()));
     };
+    
 
     syncClosedPolls(); 
 

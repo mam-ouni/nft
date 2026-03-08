@@ -10,6 +10,7 @@ import AdminPanel from "@/components/AdminPanel";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import RequestAccess from "@/components/RequestAccess";
 
+
 export default function DynamicVotePage() {
   const params = useParams();
   const contractAddress = params.address; 
